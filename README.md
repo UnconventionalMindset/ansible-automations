@@ -1,4 +1,4 @@
-# Ansible Automations
+# Ansible coreos-k8s Automations
 
 ## Install requirements
 Install the required dependencies (default role folder is .galaxy-roles, which is ignored):
