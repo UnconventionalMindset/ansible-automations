@@ -1,3 +1,12 @@
+[nas]
 192.168.31.190
-192.168.31.191
-192.168.31.192
+
+[k8s-masters]
+192.168.31.190
+
+[k8s-workers]
+192.168.31.[191:192]
+
+[all:vars]
+ansible_ssh_user=core
+ansible_ssh_private_key_file=~/.ssh/coreos

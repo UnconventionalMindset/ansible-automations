@@ -1,0 +1,17 @@
+---
+
+- name: Control Plane init
+  hosts: k8s-masters
+  become: yes
+  vars_files:
+    - ../.secrets.yaml
+  roles:
+    - kubeadm-init
+
+- name: Workers join Master
+  hosts: k8s-workers
+  become: yes
+  vars_files:
+    - ../.secrets.yaml
+  roles:
+    - kubeadm-node-join

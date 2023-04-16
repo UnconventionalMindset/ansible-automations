@@ -1,0 +1,22 @@
+---
+
+- hosts: kube-cluster
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: Reset Kubernetes component
+      shell: "kubeadm reset --force --cri-socket=/var/run/{{ container_runtime }}/{{ container_runtime }}.sock"
+      ignore_errors: True
+
+    - name: Find network interfaces for Kubernetes
+      shell: "ip addr | grep {{ item }}"
+      with_items:
+        - "cni0"
+      register: find_eths
+      ignore_errors: True
+
+    - name: Delete network interfaces for Kubernetes
+      when: item.stdout != ''
+      shell: "ip link delete {{ item.item }}"
+      with_items: "{{ find_eths['results'] }}"
+      ignore_errors: True

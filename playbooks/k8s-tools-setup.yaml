@@ -1,0 +1,24 @@
+---
+
+# - name: Dashboard deployment
+#   hosts: k8s-masters
+#   become: yes
+#   roles:
+#     - kubernetes-dashboard
+
+- name: Helm deployment
+  hosts: k8s-masters
+  become: yes
+  roles:
+    - role: gantsign.helm
+  vars:
+    helm_version: '3.11.3'
+
+
+# - name: Helm deployment
+#   become: yes
+#   hosts: k8s-masters
+#   roles:
+#     - role: gantsign.helm
+#   vars:
+#     helm_version: '3.11.3'
