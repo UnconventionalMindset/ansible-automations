@@ -1,0 +1,7 @@
+
+- name: Install required core os packages using rpm-ostree
+  hosts: all
+  gather_facts: no
+  become: yes
+  roles:
+    - packages-install

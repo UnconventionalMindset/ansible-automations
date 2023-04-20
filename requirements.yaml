@@ -1,4 +1,9 @@
 ---
 
-- name: Helm
-  src: gantsign.helm
+roles:
+  - name: gantsign.helm
+    src: gantsign.helm
+
+collections:
+  - name: kubernetes.core
+  - name: community.general

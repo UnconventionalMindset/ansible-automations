@@ -1,10 +1,5 @@
 
-- name: Pauses a bit to make sure previous tasks are fully completed.
-  pause:
-    seconds: 5
-
 - name: Deploy kubernetes dashboard into cluster
-  when: init_cluster is succeeded
   command: |
     kubectl apply -f \
       https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml

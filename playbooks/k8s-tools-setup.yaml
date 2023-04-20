@@ -6,10 +6,16 @@
   roles:
     - kubernetes-dashboard
 
-- name: Helm deployment
+- name: Helm install
   hosts: k8s-masters
   become: yes
   roles:
     - role: gantsign.helm
   vars:
     helm_version: '3.11.3'
+    
+- name: Rancher - Helm deployment
+  hosts: k8s-masters
+  become: yes
+  roles:
+    - rancher
