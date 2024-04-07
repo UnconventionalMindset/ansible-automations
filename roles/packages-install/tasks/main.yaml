@@ -3,25 +3,14 @@
 - name: Install python for ansible
   raw: sudo rpm-ostree install -y -A --idempotent python3 python3-libselinux python3-docker
 
-- name: Adds K8s repo
-  copy:
-    dest: "/etc/yum.repos.d/kubernetes.repo"
-    content: |
-      [kubernetes]
-      name=Kubernetes
-      baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
-      enabled=1
-      gpgcheck=1
-      gpgkey=https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
-
 - name: Install packages needed for core OS
   community.general.rpm_ostree_pkg:
     state: present
     name:
       # K8s
-      - kubelet
-      - kubeadm
-      - kubectl
+      - "kubelet-{{ kubernetesVersion }}"
+      - "kubeadm-{{ kubernetesVersion }}"
+      - "kubectl-{{ kubernetesVersion }}"
       - cri-o
       # K8s Ansible module
       - python3
@@ -34,17 +23,36 @@
       # Editor
       - vim
       - nano
-
-- name: Enables crio
-  ansible.builtin.systemd:
-    name: crio
-    enabled: true
-
-   
-- name: Enables kubelet
-  ansible.builtin.systemd:
-    name: kubelet
-    enabled: true
+      # Was applied live but not persisted - needed for proxmox
+      - qemu-guest-agent
+      # NFS
+      - nfs-utils-coreos
+      # GO to build cni-plugins
+      - go
 
 - name: Reboot the servers
-  ansible.builtin.reboot:
+  reboot:
+
+- name: Enables crio
+  systemd:
+    name: crio
+    state: started
+    enabled: true
+   
+- name: Enables kubelet
+  systemd:
+    name: kubelet
+    state: started
+    enabled: true
+
+- name: Enables Qemu Guest Agent
+  systemd:
+    name: qemu-guest-agent
+    enabled: true
+
+- name: Install k8s Pre-requisites
+  pip:
+    name:
+      - openshift
+      - pyyaml
+      - kubernetes 

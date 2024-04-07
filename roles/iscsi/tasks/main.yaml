@@ -1,0 +1,5 @@
+- name: Enables iscsi
+  systemd:
+    name: iscsid
+    state: started
+    enabled: true

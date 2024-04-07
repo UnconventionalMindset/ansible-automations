@@ -5,3 +5,11 @@
   become: yes
   roles:
     - packages-install
+
+    
+- name: Enable ISCSI for longhorn
+  hosts: all
+  gather_facts: no
+  become: yes
+  roles:
+    - iscsi

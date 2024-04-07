@@ -1,0 +1,7 @@
+---
+
+- name: Install CNI plugins
+  hosts: all
+  become: yes
+  roles:
+    - cni-install

@@ -1,0 +1,59 @@
+- name: Clone CNI configuration
+  git:
+    clone: true
+    dest: $HOME/cni-plugins
+    repo: https://github.com/containernetworking/plugins.git
+    version: v1.4.0
+
+- name: Allow build execution
+  shell: "chmod +x $HOME/cni-plugins/build_linux.sh"
+
+- name: Builds CNI plugins
+  shell: "$HOME/cni-plugins/build_linux.sh"
+
+- name: Create CNI folder in the system
+  file:
+    path: "/opt/cni/bin/"
+    state: directory
+
+- name: Find all built CNI plugins
+  find:
+    paths: "$HOME/cni-plugins/bin/"
+    recurse: yes
+    patterns: "*"
+  register: cni_plugins
+
+- name: Copy each CNI plugin to the system
+  copy:
+    src: "{{ item.path }}"
+    dest: "/opt/cni/bin/"
+    owner: root
+    mode: 0775
+    remote_src: true
+  with_items: "{{ cni_plugins.files }}"
+
+# - name: Copy all CNI plugins to the system
+#   remote_src: true
+#   copy:
+#     src: "{{ item }}"
+#     dest: /opt/cni/bin/
+#     owner: root
+#     mode: 600
+#   with_fileglob:
+#     - "$HOME/cni-plugins/bin/*"
+
+# - name: Find all built CNI plugins
+#   ansible.builtin.find:
+#     paths: "$HOME/cni-plugins/bin/"
+#     file_type: file
+#   register: cni_plugins
+
+# - name: Copy each CNI plugin to the system
+#   ansible.builtin.copy:
+#     src: "{{ item.path }}"
+#     dest: "/opt/cni/bin/{{ item.name }}"
+#     remote_src: yes
+#   loop: "{{ cni_plugins.files }}"
+#   when: cni_plugins.files is defined and cni_plugins.files | length > 0
+
+# TODO: delete folder

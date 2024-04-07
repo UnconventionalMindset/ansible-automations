@@ -1,0 +1,5 @@
+- name: Z2Mqtt
+  hosts: k8s-masters
+  become: yes
+  roles:
+    - zigbee2mqtt

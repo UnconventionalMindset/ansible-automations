@@ -1,0 +1,5 @@
+
+- name: Adds zigbee2mqtt helm repository
+  kubernetes.core.helm_repository:
+    name: bjw-s
+    repo_url: https://bjw-s.github.io/helm-charts

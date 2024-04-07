@@ -15,3 +15,5 @@
     - ../.secrets.yaml
   roles:
     - kubeadm-node-join
+
+# TODO: investigate coredns deployment needing a restart

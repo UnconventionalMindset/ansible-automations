@@ -1,6 +1,6 @@
 apiVersion: kubeadm.k8s.io/v1beta3
 kind: ClusterConfiguration
-kubernetesVersion: "v1.27.1"
+kubernetesVersion: "v{{ kubernetesVersion }}"
 
 localAPIEndpoint:
   advertiseAddress: {{ groups['k8s-masters'][0] }}

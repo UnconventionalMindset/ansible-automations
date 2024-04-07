@@ -6,3 +6,5 @@ container_runtime: crio
 user: root
 
 master_ip: 192.168.31.190
+
+kubernetesVersion: 1.29.0
